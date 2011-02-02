@@ -8,19 +8,19 @@ import traceback
 from operator import itemgetter
 
 
-def print_consecutives(table, width, height):
+def consecutives(table, width, height):
     for row in xrange(height):
-        print [table[(row, column)] for column in xrange(width)]
+        yield [table[(row, column)] for column in xrange(width)]
     for column in xrange(height):
-        print [table[(row, column)] for row in xrange(height)]
+        yield [table[(row, column)] for row in xrange(height)]
     for row in xrange(height):
-        print [table[(column + row, column)] for column in xrange(width - row)]
+        yield [table[(column + row, column)] for column in xrange(width - row)]
     for column in xrange(width):
-        print [table[(row, row + column)] for row in xrange(height - column)]
+        yield [table[(row, row + column)] for row in xrange(height - column)]
     for row in xrange(height):
-        print [(row - column, column) for column in xrange(row + 1)]
+        yield [table[(row - column, column)] for column in xrange(row + 1)]
     for column in xrange(width):
-        print [(height - 1 - row, column + row) for row in xrange(width - column)]
+        yield [table[(height - 1 - row, column + row)] for row in xrange(width - column)]
 
 def process(args):
     try:
@@ -29,7 +29,8 @@ def process(args):
             for column, number in enumerate(map(int, line.strip().split())):
                 table[(row, column)] = number
         width, height = max(table.keys())
-        print_consecutives(table, width + 1, height + 1)
+        for consecutive in consecutives(table, width + 1, height + 1):
+            print consecutive
     except Exception:
         traceback.print_exc()
         return 2
