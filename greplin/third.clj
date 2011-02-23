@@ -7,7 +7,7 @@
 
 
 (defn candidates [sequence]
-  ; Simply generate all possible combinations, without trying to be smart
+  "Simply generate all possible combinations, without trying to be smart"
   (let [limit (count sequence)]
     (loop [length 3 result '()]
       (if (> length limit)
@@ -21,4 +21,5 @@
       (clojure.string/split (slurp "numbers.csv") #", ")))
 
 
+; maybe mapping to array would speed up things here
 (println (count (filter condition? (candidates initial-sequence))))
