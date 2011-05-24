@@ -18,19 +18,28 @@ def find_squares(word):
             yield variant
 
 
+def solution(anagrams):
+    for key, words in anagrams:
+        for variant in find_squares(key):
+            table = dict(zip(words[0], variant))
+            if ''.join(table[c] for c in words[1]) in squares:
+                yield int(''.join(variant))
+            table = dict(zip(words[1], variant))
+            if ''.join(table[c] for c in words[0]) in squares:
+                yield int(''.join(variant))
+
+
+
+
 def main(args):
     anagrams = defaultdict(list)
     for word in args.input.read().split(','):
         word = word.strip('"')
         anagrams[tuple(sorted(word))].append(word)
-    for key, value in anagrams.iteritems():
-        # We only have one case where there're 3 anagrams, so
-        # let's ignore it for now
-        if len(value) == 2:
-            print key, value
-            for variant in find_squares(key):
-                pass
-
+    # We only have one case where there're 3 anagrams and it only
+    # contains 4-letter words, so we can safely ignore this case here
+    print max(solution((key, words) for key, words in anagrams.iteritems()
+                       if len(words) == 2))
 
 
 if __name__ == '__main__':
