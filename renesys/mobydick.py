@@ -39,7 +39,8 @@ def gen_words(lines):
 
 
 def main(args):
-    lines = (line.replace('--', ' -- ') for line in islice(args.input, 30, 21746))
+    lines = (line.strip().replace('--', ' -- ')
+             for line in islice(args.input, 30, 21746))
     counter = Counter(gen_words(lines))
     res = dict((word[0], index) for index, word in
                enumerate(sorted(counter.iteritems(), key=itemgetter(1), reverse=True), 1))
