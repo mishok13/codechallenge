@@ -1,5 +1,5 @@
 (ns project-euler
-    (:use clojure.contrib.combinatorics))
+  (:use clojure.contrib.combinatorics))
 
 
 (println (combinations (range 1 4) 2))
