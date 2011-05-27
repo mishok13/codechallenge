@@ -5,55 +5,36 @@
 import argparse
 import sys
 import traceback
-from itertools import product, chain, ifilter
+from itertools import product, chain, ifilter, imap
 from collections import defaultdict
 
 
 available = [1, 2, 5, 10, 20, 50, 100, 200]
 
 
-def solve(maximum):
-    cache = defaultdict(list)
-    def solver(value, coins):
-        res = []
-        for coin in available:
-            if coin == value:
-                res.append(tuple(sorted(coins + [coin])))
-            elif coin < value:
-                solution = solver(value - coin, coins + [coin])
-                if solution:
-                    res.extend(solution)
-        ret = tuple(set(res))
-        cache[sum(coins)].append(ret)
-        return ret
-    return solver(maximum, []), cache
-
-
-def solve_working(maximum):
-    cache = {}
-    def solver(value, coins):
+def solve(value):
+    cache = {0: [], 1: set([(1, )]),
+             # 2: set([(1, 1), (2, )])
+             }
+    def solver(val):
         try:
-            return cache[value]
+            return cache[val]
         except KeyError:
-            res = []
+            solution = set()
             for coin in available:
-                if coin == value:
-                    res.append(tuple(sorted(coins + [coin])))
-                elif coin < value:
-                    solution = solver(value - coin, coins + [coin])
-                    if solution:
-                        res.extend(solution)
-            ret = list(set(res))
-            # cache[value] = ret
-            return ret
-        # for solution in ifilter(None, (solver(value - coin, coins + [coin]) if value - coin else coins + [coin] for coin in available if coin <= value)):
-        #     print value, sorted(solution)
-    return solver(maximum, [])
+                if coin < val:
+                    for left, right in product(solver(val - coin), solver(coin)):
+                        solution.add(tuple(sorted(left + right)))
+                elif coin == val:
+                    solution.add((coin, ))
+            cache[val] = solution
+            return solution
+    return solver(value)
 
 
 def main(args):
     ret = solve(args.value)
-    print ret
+    print len(ret)
 
 
 if __name__ == '__main__':
