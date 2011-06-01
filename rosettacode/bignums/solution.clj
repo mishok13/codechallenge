@@ -9,4 +9,4 @@
 
 (assert (= "62060698786608744707" (.substring sbig 0 20)))
 (assert (= "92256259918212890625" (.substring sbig (- (count sbig) 20))))
-(println (.substring sbig 0 20) "..."  (count sbig) (.substring sbig (- (count sbig) 20)) "digits")
+(println (.substring sbig 0 20) "..."  (.substring sbig (- (count sbig) 20)) ", " (count sbig) "digits")
