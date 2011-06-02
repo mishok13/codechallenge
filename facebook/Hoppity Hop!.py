@@ -9,12 +9,12 @@ def main(fname):
     limit = int(open(fname).read().strip())
     for x in xrange(1, limit + 1):
         if not x % 15:
-            print x, 'Hop'
+            print 'Hop'
             continue
         if not x % 3:
-            print x, 'Hoppity'
+            print 'Hoppity'
         if not x % 5:
-            print x, 'Hophop'
+            print 'Hophop'
 
 
 
